@@ -73,3 +73,21 @@ def home():
 
     return render_template('index.html')
 
+@main_blueprint.route('/test', methods=['GET', 'POST'])
+def test():
+    data = None
+
+    if request.method == "POST":
+        data = request.form
+
+    if request.method == "GET":
+        data = request.args
+
+    if data==None:
+        data = {}
+    else:
+        data = data.to_dict()
+
+    rep = 'i have got the request data:'+str(data)+',thank u !'
+    return rep
+
