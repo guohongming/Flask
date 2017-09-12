@@ -88,6 +88,6 @@ def test():
     else:
         data = data.to_dict()
 
-    rep = 'i have got the request data:'+str(data)+',thank u !'
+    rep = 'i have got the request data:'+str(data)+',thank u !!!'
     return rep
 
