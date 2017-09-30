@@ -22,7 +22,7 @@ def create_app(object_name):
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
-    app.register_blueprint(main_blueprint)
+    app.register_blueprint(main_blueprint, url_prefix='/main')
 
     return app
 
