@@ -1,10 +1,10 @@
 __author__ = 'Guo'
 
 from flask_script import Manager, Server
-from movieapp import create_app
-from movieapp.models import models
+from lockerapp import create_app
+from lockerapp.models import models
 
-app = create_app('movieapp.config.DevConfig')
+app = create_app('lockerapp.config.DevConfig')
 manager = Manager(app)
 manager.add_command("runserver", Server())
 
