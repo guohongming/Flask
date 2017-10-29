@@ -2,6 +2,7 @@ from flask import jsonify, request
 from lockerapp.users.model import Users
 from flask_jwt import jwt_required, current_identity
 from .. import common
+import json
 
 def init_api(app):
     @app.route('/register', methods=['POST'])
@@ -10,9 +11,18 @@ def init_api(app):
         用户注册
         :return: json
         """
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password = request.form.get('password')
+
+        data = request.get_data().decode("utf-8")
+        data_json = json.loads(data)
+
+        # email = request.form.get('email')
+        # username = request.form.get('username')
+        # password = request.form.get('password')
+
+        email = data_json["email"]
+        username = data_json["username"]
+        password = data_json["password"]
+
         user = Users(email=email, username=username, password=Users.set_password(Users, password))
         result = Users.add(Users, user)
         if user.id:
