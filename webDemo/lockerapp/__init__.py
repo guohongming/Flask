@@ -34,7 +34,7 @@ def create_app(object_name):
     auth = Auth()
     jwt = JWT(app, auth.authenticate, auth.identity)
 
-    from  lockerapp.users.model import db
+    from lockerapp.users.model import db
     db.init_app(app)
     from lockerapp.users.api import init_api
     init_api(app)
