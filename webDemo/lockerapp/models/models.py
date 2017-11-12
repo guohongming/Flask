@@ -1,7 +1,6 @@
 __author__ = 'Guo'
 from flask_sqlalchemy import SQLAlchemy
-from lockerapp.extensions import bcrypt
-from lockerapp.extensions import login_manager
+
 from flask_login import AnonymousUserMixin
 db_user = SQLAlchemy()
 

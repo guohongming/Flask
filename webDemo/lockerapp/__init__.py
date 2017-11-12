@@ -1,9 +1,9 @@
 __author__ = 'Guo'
 from flask import Flask,request
-from lockerapp.models.models import db_user
+
 from lockerapp.models import myjinjafilter
 from lockerapp.controllers.main import main_blueprint
-from lockerapp.extensions import bcrypt, login_manager
+
 from flask_jwt import JWT
 
 
@@ -39,9 +39,8 @@ def create_app(object_name):
     from lockerapp.users.api import init_api
     init_api(app)
 
-    db_user.init_app(app)
-    bcrypt.init_app(app)
-    login_manager.init_app(app)
+
+
 
     app.register_blueprint(main_blueprint, url_prefix='/main')
 

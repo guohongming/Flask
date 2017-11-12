@@ -10,13 +10,13 @@ from flask import (render_template,
                     jsonify,
                    session)
 
-from lockerapp.models.forms import LoginForm, RegisterForm
-from lockerapp.models.models import User, db_user
-from flask_login import login_user, logout_user, current_user, login_required
+
+
 from lockerapp.users.model import Users
 from lockerapp import common
 from lockerapp.auth.auths import Auth
 from flask_jwt import jwt_required, current_identity
+from lockerapp.util import push
 
 main_blueprint = Blueprint(
     'main',
@@ -37,7 +37,12 @@ def get_common_log():
 
 
 
-
+@main_blueprint.route('/pushMsgAll', methods=['GET', 'POST'])
+def push_msg_all():
+    msg = '第一个msg ，测试..'
+    push.all(msg)
+    # push.notification()
+    return jsonify(common.trueReturn(data={}, msg='发送成功'))
 
 
 
