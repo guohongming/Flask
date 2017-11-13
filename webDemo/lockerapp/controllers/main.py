@@ -51,6 +51,10 @@ def home():
     return 'hello world'
 
 
+@main_blueprint.route('/sendLockerMsg', methods=['GET', 'POST'])
+def send_locker_msg():
+    return 'i got'
+
 @main_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
     data = None
