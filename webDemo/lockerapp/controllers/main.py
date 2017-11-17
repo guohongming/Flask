@@ -40,8 +40,9 @@ def get_common_log():
 @main_blueprint.route('/pushMsgAll', methods=['GET', 'POST'])
 def push_msg_all():
     msg = '第一个msg ，测试..'
-    push.all(msg)
+    # push.all(msg)
     # push.notification()
+    push.audience_for_alias("smartLocker_22","warn")
     return jsonify(common.trueReturn(data={}, msg='发送成功'))
 
 
@@ -58,7 +59,7 @@ def send_locker_msg():
 @main_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
     data = None
-
+    request_a = request.data.decode("utf-8")
     if request.method == "POST":
         data = request.form
 
