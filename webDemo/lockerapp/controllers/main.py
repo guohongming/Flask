@@ -76,7 +76,7 @@ def send_locker_msg():
     #     pass
 
 
-    push.audience_for_alias("smartLocker_72", "send")
+    push.audience_for_alias("smartLocker_72", "warn")
     return "1"
 
 @main_blueprint.route('/test', methods=['GET', 'POST'])
