@@ -54,13 +54,35 @@ def home():
 
 @main_blueprint.route('/sendLockerMsg', methods=['GET', 'POST'])
 def send_locker_msg():
-    request_a = request.data.decode("utf-8")
-    push.audience_for_alias("smartLocker_72", request_a)
-    return request_a
+
+    # try:
+    #     request_a = request.data.decode("utf-8")
+    # except:
+    #     request_a = "err"
+
+     # if request_a == "10H":
+    #     pass
+    # elif request_a=="11H":
+    #     pass
+    # elif request_a=="12H":
+    #     pass
+    # elif request_a=="13H":
+    #     pass
+    # elif request_a=="14H":
+    #     pass
+    # elif request_a=="15H":
+    #     pass
+    # elif request_a=="16H":
+    #     pass
+
+
+    push.audience_for_alias("smartLocker_72", "send")
+    return "1"
 
 @main_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
     data = None
+    request_b = request
     request_a = request.data.decode("utf-8")
     if request.method == "POST":
         data = request.form
