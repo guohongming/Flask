@@ -54,7 +54,9 @@ def home():
 
 @main_blueprint.route('/sendLockerMsg', methods=['GET', 'POST'])
 def send_locker_msg():
-    return 'i got'
+    request_a = request.data.decode("utf-8")
+    push.audience_for_alias("smartLocker_72", request_a)
+    return request_a
 
 @main_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
