@@ -42,7 +42,7 @@ def push_msg_all():
     msg = '第一个msg ，测试..'
     # push.all(msg)
     # push.notification()
-    push.audience_for_alias("smartLocker_69","warn")
+    push.audience_for_alias("smartLocker_74","warn")
     return jsonify(common.trueReturn(data={}, msg='发送成功'))
 
 
