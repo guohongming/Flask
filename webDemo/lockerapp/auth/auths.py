@@ -10,8 +10,8 @@ class Auth():
         return "Something bad happened", 400
 
 
-    def authenticate(self, username, password):
-        userInfo = Users.query.filter_by(username=username).first()
+    def authenticate(self, phone, password):
+        userInfo = Users.query.filter_by(phone =phone).first()
         if (userInfo is None):
             self.error_handler('找不到用户')
         else:

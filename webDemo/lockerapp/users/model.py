@@ -10,15 +10,14 @@ db = SQLAlchemy()
 class Users(db.Model):
     __tablename__ = 'lock_user'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255),  unique=True, nullable=False)
-    username = db.Column(db.String(255),  unique=True, nullable=False)
+    phone = db.Column(db.String(255),  unique=True, nullable=False)
     password = db.Column(db.String(255))
     login_time = db.Column(db.Integer)
 
-    def __init__(self, username, password, email):
-        self.username = username
+    def __init__(self,phone, password):
+        self.phone = phone
         self.password = password
-        self.email = email
+
 
     def __str__(self):
         return "Users(id='%s')" % self.id

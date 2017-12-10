@@ -15,21 +15,15 @@ def init_api(app):
         data = request.get_data().decode("utf-8")
         data_json = json.loads(data)
 
-        # email = request.form.get('email')
-        # username = request.form.get('username')
-        # password = request.form.get('password')
-
-        email = data_json["email"]
-        username = data_json["username"]
+        phone = data_json["phone"]
         password = data_json["password"]
 
-        user = Users(email=email, username=username, password=Users.set_password(Users, password))
+        user = Users(phone=phone, password=Users.set_password(Users, password))
         result = Users.add(Users, user)
         if user.id:
             returnUser = {
                 'id': user.id,
-                'username': user.username,
-                'email': user.email,
+                'phone': user.phone,
                 'login_time': user.login_time
             }
             return jsonify(common.trueReturn(returnUser, "用户注册成功"))
@@ -53,8 +47,7 @@ def init_api(app):
         user = Users.get(Users, current_identity.id)
         returnUser = {
             'id': user.id,
-            'username': user.username,
-            'email': user.email,
+            'phone': user.phone,
             'login_time': user.login_time
         }
         return jsonify(common.trueReturn(returnUser, "请求成功"))
