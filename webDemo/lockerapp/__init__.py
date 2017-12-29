@@ -3,7 +3,7 @@ from flask import Flask,request
 
 from lockerapp.models import myjinjafilter
 from lockerapp.controllers.main import main_blueprint
-
+from lockerapp.controllers.device import device_blueprint
 from flask_jwt import JWT
 
 
@@ -43,7 +43,7 @@ def create_app(object_name):
 
 
     app.register_blueprint(main_blueprint, url_prefix='/main')
-
+    app.register_blueprint(device_blueprint, url_prefix='/device')
     return app
 
 if __name__ == '__main__':

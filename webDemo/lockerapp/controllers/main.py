@@ -29,7 +29,7 @@ main_blueprint = Blueprint(
 )
 
 
-@main_blueprint.route('/getForgetLog', methods=['GET', 'POST'])
+@main_blueprint.route('/forgetKey', methods=['GET', 'POST'])
 # @jwt_required()
 def get_forget_log():
     # user = Users.get(Users, current_identity.id)
@@ -48,7 +48,7 @@ def get_forget_log():
 
 
 
-@main_blueprint.route('/getCommonLog', methods=['GET', 'POST'])
+@main_blueprint.route('/inOutDoor', methods=['GET', 'POST'])
 # @jwt_required()
 def get_common_log():
     # user = Users.get(Users, current_identity.id)
