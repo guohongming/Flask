@@ -101,8 +101,8 @@ def home():
 @main_blueprint.route('/sendLockerMsg', methods=['GET', 'POST'])
 def send_locker_msg():
     request_a = request
-    b = request_a.stream
-    a = str(request_a.stream)
+    data = request.get_data().decode("utf-8")
+
     print(1)
     # try:
     #     request_a = request.data.decode("utf-8")

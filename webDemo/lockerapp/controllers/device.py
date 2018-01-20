@@ -37,7 +37,7 @@ def locker_feature_confirm():
     data_json = json.loads(data)
     feature_id = data_json["feature_id"]
 
-    return common.trueReturn(msg="1")
+    return jsonify(common.trueReturn(data="1", msg="1"))
 
 # 出入门显示功能选择
 @device_blueprint.route('/inOutDoorDisplay', methods=['GET', 'POST'])
@@ -47,7 +47,7 @@ def in_out_door_display():
     data_json = json.loads(data)
     display = data_json['display']
 
-    return common.trueReturn(msg="1")
+    return jsonify(common.trueReturn(data="1", msg="1"))
 
 
 # 附加提示音设置
@@ -58,11 +58,11 @@ def additional_beep_settings():
     data_json = json.loads(data)
     setting_id = data_json['setting_id']
 
-    return common.trueReturn(msg="1")
+    return jsonify(common.trueReturn(data="1", msg="1"))
 
 # 让服务器启动网络监测
 @device_blueprint.route('/networkDetection', methods=['GET', 'POST'])
 # @jwt_required()
 def network_detection():
-    return common.trueReturn(msg="1")
+    return jsonify(common.trueReturn(data="1", msg="1"))
 
