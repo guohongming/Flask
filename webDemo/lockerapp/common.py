@@ -1,7 +1,7 @@
 __author__ = 'Guo'
 
 
-def trueReturn(data, msg):
+def trueReturn(data=None, msg=None):
     return {
         "status": True,
         "data": data,
@@ -9,7 +9,7 @@ def trueReturn(data, msg):
     }
 
 
-def falseReturn(data, msg):
+def falseReturn(data=None, msg=None):
     return {
         "status": False,
         "data": data,

@@ -20,6 +20,7 @@ from lockerapp.util import push
 from lockerapp.models.locker_common_log import LockerCommonLog
 from lockerapp.models.locker_warning_log import LockerWarningLog
 from lockerapp.models.locker_forget_log import LockerForgetLog
+from lockerapp.models.locker import Locker
 import datetime
 
 main_blueprint = Blueprint(
@@ -100,33 +101,43 @@ def home():
 
 @main_blueprint.route('/sendLockerMsg', methods=['GET', 'POST'])
 def send_locker_msg():
+
     request_a = request
+    locker_id = dict(request_a.headers)["Locker-Id"]  # 获取请求头中的lockerid
     data = request.get_data().decode("utf-8")
+    if len(data) != 5:
+        return "false"
 
-    print(1)
-    # try:
-    #     request_a = request.data.decode("utf-8")
-    # except:
-    #     request_a = "err"
+    # 功能设置按钮触
+    if data == "AZZZZ":
+        locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).all()[0]  #根据locker_id  查库
+        return "S"+locker.feature_id+locker.chu_ru+locker.tips+"Z"  #拼装出参
 
-     # if request_a == "10H":
-    #     pass
-    # elif request_a=="11H":
-    #     pass
-    # elif request_a=="12H":
-    #     pass
-    # elif request_a=="13H":
-    #     pass
-    # elif request_a=="14H":
-    #     pass
-    # elif request_a=="15H":
-    #     pass
-    # elif request_a=="16H":
-    #     pass
+    # 盗贼假钥匙开锁
+    if data == "ABZZZ":
+        return "abzzz"
 
+    # 盗贼拆锁芯
+    if data == "ACZZZ":
+        return "aczzz"
 
-    push.audience_for_alias("smartLocker_75", "warn")
-    return "1"
+    # 盗贼撬门
+    if data == "ADZZZ":
+        return "adzzz"
+
+    # 盗贼锡纸开锁
+    if data == "AEZZZ":
+        return "aezzz"
+
+    # 有人出门
+    if data == "AFZZZ":
+        return "afzzz"
+
+    # 有人入门
+    if data == "AGZZZ":
+        return "agzzz"
+
+    return "false"
 
 @main_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
