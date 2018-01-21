@@ -105,6 +105,8 @@ def send_locker_msg():
     request_a = request
     locker_id = dict(request_a.headers)["Locker-Id"]  # 获取请求头中的lockerid
     data = request.get_data().decode("utf-8")
+    locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).all()[0]  #根据locker_id  查库
+    id = locker.id
     if len(data) != 5:
         return "false"
 
@@ -115,26 +117,68 @@ def send_locker_msg():
 
     # 盗贼假钥匙开锁
     if data == "ABZZZ":
+        log = LockerWarningLog()
+        log.locker_id = locker_id
+        log.del_flag = 0
+        log.locker_id = id
+        log.warning_log = 1
+        log.create_time = datetime.datetime.now()
+        log.save()
         return "abzzz"
 
     # 盗贼拆锁芯
     if data == "ACZZZ":
+        log = LockerWarningLog()
+        log.locker_id = locker_id
+        log.del_flag = 0
+        log.locker_id = id
+        log.warning_log = 2
+        log.create_time = datetime.datetime.now()
+        log.save()
         return "aczzz"
 
     # 盗贼撬门
     if data == "ADZZZ":
+        log = LockerWarningLog()
+        log.locker_id = locker_id
+        log.del_flag = 0
+        log.locker_id = id
+        log.warning_log = 3
+        log.create_time = datetime.datetime.now()
+        log.save()
         return "adzzz"
 
     # 盗贼锡纸开锁
     if data == "AEZZZ":
+        log = LockerWarningLog()
+        log.locker_id = locker_id
+        log.del_flag = 0
+        log.locker_id = id
+        log.warning_log = 4
+        log.create_time = datetime.datetime.now()
+        log.save()
         return "aezzz"
 
     # 有人出门
     if data == "AFZZZ":
+        log = LockerCommonLog()
+        log.locker_id = locker_id
+        log.del_flag = 0
+        log.locker_id = id
+        log.common_log = 2
+        log.create_time = datetime.datetime.now()
+        log.save()
         return "afzzz"
 
     # 有人入门
     if data == "AGZZZ":
+        log = LockerCommonLog()
+        log.locker_id = locker_id
+        log.del_flag = 0
+        log.locker_id = id
+        log.common_log = 1
+        log.create_time = datetime.datetime.now()
+        log.save()
         return "agzzz"
 
     return "false"

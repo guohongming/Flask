@@ -13,7 +13,7 @@ class LockerCommonLog(db.Model):
     del_flag = db.Column(db.INTEGER)
     create_time = db.Column(db.DATETIME)
 
-    def __init__(self, locker_id, common_log,del_flag,create_time):
+    def __init__(self, locker_id = None, common_log = None,del_flag = 0,create_time = None):
         self.locker_id = locker_id
         self.common_log = common_log
         self.del_flag = del_flag
