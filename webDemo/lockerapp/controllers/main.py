@@ -104,7 +104,7 @@ def home():
 def send_locker_msg():
 
     request_a = request
-    locker_id = dict(request_a.headers)["Locker-Id"]  # 获取请求头中的lockerid
+    locker_id = dict(request_a.headers)["Lockerid"]  # 获取请求头中的lockerid
     data = request.get_data().decode("utf-8")
     locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).all()[0]  #根据locker_id  查库
     id = locker.id
