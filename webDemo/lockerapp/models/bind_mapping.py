@@ -12,7 +12,7 @@ class BindMapping(db.Model):
     locker_id = db.Column(db.Integer)
     del_flag = db.Column(db.Integer)
 
-    def __init__(self, user_id, locker_id, del_flag):
+    def __init__(self, user_id = None, locker_id = None, del_flag = 0):
         self.user_id = user_id
         self.locker_id = locker_id
         self.del_flag = del_flag

@@ -21,6 +21,7 @@ from lockerapp.models.locker_common_log import LockerCommonLog
 from lockerapp.models.locker_warning_log import LockerWarningLog
 from lockerapp.models.locker_forget_log import LockerForgetLog
 from lockerapp.models.locker import Locker
+from lockerapp.models.bind_mapping import BindMapping
 import datetime
 
 main_blueprint = Blueprint(
@@ -107,6 +108,9 @@ def send_locker_msg():
     data = request.get_data().decode("utf-8")
     locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).all()[0]  #根据locker_id  查库
     id = locker.id
+    mapping = BindMapping.query.filter(BindMapping.locker_id == id,BindMapping.del_flag == 0).all()[0]
+    user_id = mapping.user_id
+    tag = "smartLocker_"+str(user_id)
     if len(data) != 5:
         return "false"
 
@@ -124,6 +128,10 @@ def send_locker_msg():
         log.warning_log = 1
         log.create_time = datetime.datetime.now()
         log.save()
+        try:
+            push.audience_for_alias(tag,"warn_1")
+        except Exception as e:
+            pass
         return "abzzz"
 
     # 盗贼拆锁芯
@@ -135,6 +143,10 @@ def send_locker_msg():
         log.warning_log = 2
         log.create_time = datetime.datetime.now()
         log.save()
+        try:
+            push.audience_for_alias(tag,"warn_2")
+        except Exception as e:
+            pass
         return "aczzz"
 
     # 盗贼撬门
@@ -146,6 +158,10 @@ def send_locker_msg():
         log.warning_log = 3
         log.create_time = datetime.datetime.now()
         log.save()
+        try:
+            push.audience_for_alias(tag,"warn_3")
+        except Exception as e:
+            pass
         return "adzzz"
 
     # 盗贼锡纸开锁
@@ -157,6 +173,10 @@ def send_locker_msg():
         log.warning_log = 4
         log.create_time = datetime.datetime.now()
         log.save()
+        try:
+            push.audience_for_alias(tag,"warn_4")
+        except Exception as e:
+            pass
         return "aezzz"
 
     # 有人出门
@@ -168,6 +188,10 @@ def send_locker_msg():
         log.common_log = 2
         log.create_time = datetime.datetime.now()
         log.save()
+        try:
+            push.audience_for_alias(tag,"prompt_2")
+        except Exception as e:
+            pass
         return "afzzz"
 
     # 有人入门
@@ -179,6 +203,10 @@ def send_locker_msg():
         log.common_log = 1
         log.create_time = datetime.datetime.now()
         log.save()
+        try:
+            push.audience_for_alias(tag,"prompt_1")
+        except Exception as e:
+            pass
         return "agzzz"
 
     return "false"
