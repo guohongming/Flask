@@ -1,27 +1,12 @@
 __author__ = 'Guo'
 
-from flask import (render_template,
-                   current_app,
-                   Blueprint,
-                   redirect,
-                   url_for,
-                   request,
-                   flash,
-                    jsonify,
-                   session)
-
-
-
-from lockerapp.users.model import Users
-from lockerapp import common
-from lockerapp.auth.auths import Auth
-from flask_jwt import jwt_required, current_identity
-from lockerapp.util import push
-from lockerapp.models.locker_common_log import LockerCommonLog
-from lockerapp.models.locker_warning_log import LockerWarningLog
-from lockerapp.models.locker_forget_log import LockerForgetLog
-import datetime
 import json
+
+from flask import (Blueprint,
+                   request,
+                   jsonify)
+
+from lockerapp import common
 
 device_blueprint = Blueprint(
     'device',
@@ -38,6 +23,7 @@ def locker_feature_confirm():
     feature_id = data_json["feature_id"]
 
     return jsonify(common.trueReturn(data="1", msg="1"))
+
 
 # 出入门显示功能选择
 @device_blueprint.route('/inOutDoorDisplay', methods=['GET', 'POST'])
@@ -59,6 +45,7 @@ def additional_beep_settings():
     setting_id = data_json['setting_id']
 
     return jsonify(common.trueReturn(data="1", msg="1"))
+
 
 # 让服务器启动网络监测
 @device_blueprint.route('/networkDetection', methods=['GET', 'POST'])

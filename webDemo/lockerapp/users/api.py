@@ -4,6 +4,7 @@ from flask_jwt import jwt_required, current_identity
 from .. import common
 import json
 
+
 def init_api(app):
     @app.route('/register', methods=['POST'])
     def register():

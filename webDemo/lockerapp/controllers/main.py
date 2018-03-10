@@ -1,4 +1,4 @@
-__author__ = 'Guo'
+# coding:utf-8
 
 from flask import (render_template,
                    current_app,
@@ -23,6 +23,7 @@ from lockerapp.models.locker_forget_log import LockerForgetLog
 from lockerapp.models.locker import Locker
 from lockerapp.models.bind_mapping import BindMapping
 import datetime
+import json
 
 main_blueprint = Blueprint(
     'main',
@@ -43,12 +44,10 @@ def get_forget_log():
         d['id'] = i.id
         d['locker_id'] = i.locker_id
         d['forget_log'] = i.forget_log
-        d['create_time'] = i.create_time
+        d['create_time'] = i.create_time.strftime('%Y{y}%m{m}%d{d}  %H{h}:%M{M}:%S{s}').format(y='年', m='月', d='日', h='时', M='分', s='秒')
         result.append(d)
 
     return jsonify(common.trueReturn(result,msg="获取记遗忘钥匙记录成功"))
-
-
 
 @main_blueprint.route('/inOutDoor', methods=['GET', 'POST'])
 # @jwt_required()
@@ -106,9 +105,9 @@ def send_locker_msg():
     request_a = request
     locker_id = dict(request_a.headers)["Lockerid"]  # 获取请求头中的lockerid
     data = request.get_data().decode("utf-8")
-    locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).all()[0]  #根据locker_id  查库
+    locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id)().first()  #根据locker_id  查库
     id = locker.id
-    mapping = BindMapping.query.filter(BindMapping.locker_id == id,BindMapping.del_flag == 0).all()[0]
+    mapping = BindMapping.query.filter(BindMapping.locker_id == id,BindMapping.del_flag == 0).first()
     user_id = mapping.user_id
     tag = "smartLocker_"+str(user_id)
     if len(data) != 5:
@@ -116,7 +115,7 @@ def send_locker_msg():
 
     # 功能设置按钮触
     if data == "AZZZZ":
-        locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).all()[0]  #根据locker_id  查库
+        locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).first()  #根据locker_id  查库
         return "S"+locker.feature_id+locker.chu_ru+locker.tips+"Z"  #拼装出参
 
     # 盗贼假钥匙开锁
@@ -210,6 +209,27 @@ def send_locker_msg():
         return "agzzz"
 
     return "false"
+
+# 绑定锁 输入序列号 和 密码
+@main_blueprint.route('/deviceBinding', methods=['GET', 'POST'])
+def device_binding():
+    user = Users.get(Users, current_identity.id)
+    user_id = user.id
+    data = request.get_data().decode("utf-8")
+    data_json = json.loads(data)
+    request_id = data_json['id']
+    request_pwd = data_json['pwd']
+    locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==request_id).first()
+    if locker.password == request_pwd:
+        mapping = BindMapping()
+        mapping.locker_id = locker.id
+        mapping.del_flag = 0
+        mapping.user_id = user_id
+        mapping.save()
+        return jsonify(common.trueReturn(msg='绑定成功'))
+    else:
+        return jsonify(common.falseReturn(msg='输入的序列号或密码错误'))
+
 
 @main_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
