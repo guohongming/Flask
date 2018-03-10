@@ -22,6 +22,7 @@ from lockerapp.models.locker_warning_log import LockerWarningLog
 from lockerapp.models.locker_forget_log import LockerForgetLog
 from lockerapp.models.locker import Locker
 from lockerapp.models.bind_mapping import BindMapping
+from lockerapp.util.time_format_util import time_to_chinese
 import datetime
 import json
 
@@ -44,7 +45,7 @@ def get_forget_log():
         d['id'] = i.id
         d['locker_id'] = i.locker_id
         d['forget_log'] = i.forget_log
-        d['create_time'] = i.create_time.strftime('%Y{y}%m{m}%d{d}  %H{h}:%M{M}:%S{s}').format(y='年', m='月', d='日', h='时', M='分', s='秒')
+        d['create_time'] = time_to_chinese(i.create_time)
         result.append(d)
 
     return jsonify(common.trueReturn(result,msg="获取记遗忘钥匙记录成功"))
@@ -61,7 +62,7 @@ def get_common_log():
         d['id'] = i.id
         d['locker_id'] = i.locker_id
         d['common_log'] = i.common_log
-        d['create_time'] = i.create_time
+        d['create_time'] = time_to_chinese(i.create_time)
         result.append(d)
 
     return jsonify(common.trueReturn(result,msg="获取出入门记录成功"))
@@ -79,7 +80,7 @@ def get_warning_log():
         d['id'] = i.id
         d['locker_id'] = i.locker_id
         d['warning_log'] = i.warning_log
-        d['create_time'] = i.create_time
+        d['create_time'] = time_to_chinese(i.create_time)
         result.append(d)
 
     return jsonify(common.trueReturn(result,msg="获取告警记录成功"))
