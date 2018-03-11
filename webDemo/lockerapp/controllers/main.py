@@ -34,10 +34,10 @@ main_blueprint = Blueprint(
 
 
 @main_blueprint.route('/forgetKey', methods=['GET', 'POST'])
-# @jwt_required()
+@jwt_required()
 def get_forget_log():
-    # user = Users.get(Users, current_identity.id)
-    # user_id = user.id
+    user = Users.get(Users, current_identity.id)
+    user_id = user.id
     flogs = LockerForgetLog.query.filter(LockerForgetLog.del_flag==0,LockerForgetLog.locker_id==1).all()
     result = []
     for i in flogs:
@@ -213,6 +213,7 @@ def send_locker_msg():
 
 # 绑定锁 输入序列号 和 密码
 @main_blueprint.route('/deviceBinding', methods=['GET', 'POST'])
+@jwt_required()
 def device_binding():
     user = Users.get(Users, current_identity.id)
     user_id = user.id
@@ -221,7 +222,10 @@ def device_binding():
     request_id = data_json['id']
     request_pwd = data_json['pwd']
     locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==request_id).first()
-    if locker.password == request_pwd:
+    if not locker:
+        return jsonify(common.falseReturn(msg='输入的序列号或密码错误'))
+
+    if locker.lock_password == request_pwd:
         mapping = BindMapping()
         mapping.locker_id = locker.id
         mapping.del_flag = 0
