@@ -69,10 +69,10 @@ def get_common_log():
 
 
 @main_blueprint.route('/getWarningLog', methods=['GET', 'POST'])
-# @jwt_required()
+@jwt_required()
 def get_warning_log():
-    # user = Users.get(Users, current_identity.id)
-    # user_id = user.id
+    user = Users.get(Users, current_identity.id)
+    user_id = user.id
     wlogs = LockerWarningLog.query.filter(LockerWarningLog.del_flag==0,LockerWarningLog.locker_id==1).all()
     result = []
     for i in wlogs:
@@ -129,7 +129,7 @@ def send_locker_msg():
         log.create_time = datetime.datetime.now()
         log.save()
         try:
-            push.audience_for_alias(tag,"warn_1")
+            push.audience_for_alias(tag,"warn_1_1")
         except Exception as e:
             pass
         return "abzzz"
@@ -144,7 +144,7 @@ def send_locker_msg():
         log.create_time = datetime.datetime.now()
         log.save()
         try:
-            push.audience_for_alias(tag,"warn_2")
+            push.audience_for_alias(tag,"warn_1_2")
         except Exception as e:
             pass
         return "aczzz"
@@ -159,7 +159,7 @@ def send_locker_msg():
         log.create_time = datetime.datetime.now()
         log.save()
         try:
-            push.audience_for_alias(tag,"warn_3")
+            push.audience_for_alias(tag,"warn_1_3")
         except Exception as e:
             pass
         return "adzzz"
