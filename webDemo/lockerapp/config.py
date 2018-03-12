@@ -1,11 +1,12 @@
 __author__ = 'Guo'
 from os import path
-
+import datetime
 
 class Config(object):
     #　JWT_AUTH_USERNAME_KEY='blank'
     SECRET_KEY = 'this is blank guo'
     JWT_AUTH_URL_RULE = '/login'
+    JWT_EXPIRATION_DELTA = datetime.timedelta(weeks=4)
     pass
 
 
