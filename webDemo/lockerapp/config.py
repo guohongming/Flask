@@ -7,7 +7,6 @@ class Config(object):
     SECRET_KEY = 'this is blank guo'
     JWT_AUTH_URL_RULE = '/login'
     JWT_EXPIRATION_DELTA = datetime.timedelta(weeks=4)
-    JWT_NOT_BEFORE_DELTA = datetime.timedelta(weeks=1)
     pass
 
 class prodConfig(Config):
