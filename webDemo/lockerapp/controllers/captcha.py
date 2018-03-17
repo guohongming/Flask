@@ -48,8 +48,8 @@ def captcha4register():
     try:
         result = RCSCLOUDAPI.sendTplSms("76d68898d8624cbba44f8cc7626c830f", phone, "@1@=%s" % captcha)
 
-        print(result)
-
+        # print(result)
+        # print("_______________-",PhoneCaptcha.phone_captcha_dict)
         # 记录发送短信的字典，手机号为key，验证码和时间戳为值
         import time
         startTime = int(time.time())

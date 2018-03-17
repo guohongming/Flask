@@ -15,7 +15,7 @@ def init_api(app):
         用户注册
         :return: json
         """
-
+        # print("+++++++++++++++",PhoneCaptcha.phone_captcha_dict)
         data = request.get_data().decode("utf-8")
         data_json = json.loads(data)
         # print(data_json)
@@ -23,14 +23,15 @@ def init_api(app):
         phone = data_json["phone"]
         captcha4register = data_json["captcha"]
         password = data_json["password"]
-        if PhoneCaptcha.phone_captcha_dict and PhoneCaptcha.phone_captcha_dict.__contains__(phone):
+        # print("3333",PhoneCaptcha.phone_captcha_dict.keys)
+        if PhoneCaptcha.phone_captcha_dict and phone in PhoneCaptcha.phone_captcha_dict:
             captcha, startTime = PhoneCaptcha.phone_captcha_dict[phone]
             # print(captcha, startTime)
             if captcha4register == str(captcha):
                 user = Users(phone=phone, password=Users.set_password(Users, password))
                 result = Users.add(Users, user)
                 # print(result)
-                if "Duplicate entry" in result and "for key 'username'" in result:
+                if result:
                     return jsonify(common.falseReturn('', '该账号已经被注册'))
                 if user.id:
                     returnUser = {
