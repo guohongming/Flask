@@ -19,11 +19,9 @@ def init_api(app):
         data = request.get_data().decode("utf-8")
         data_json = json.loads(data)
         # print(data_json)
-        # print(PhoneCaptcha.phone_captcha_dict)
         phone = data_json["phone"]
         captcha4register = data_json["captcha"]
         password = data_json["password"]
-        # print("3333",PhoneCaptcha.phone_captcha_dict.keys)
         if PhoneCaptcha.phone_captcha_dict and phone in PhoneCaptcha.phone_captcha_dict:
             captcha, startTime = PhoneCaptcha.phone_captcha_dict[phone]
             # print(captcha, startTime)
@@ -67,3 +65,43 @@ def init_api(app):
             'login_time': user.login_time
         }
         return jsonify(common.trueReturn(returnUser, "请求成功"))
+
+    @app.route('/forgetPwd', methods=['POST'])
+    def forgetPwd():
+        """
+        用户注册
+        :return: json
+        """
+        # print("+++++++++++++++",PhoneCaptcha.phone_captcha_dict)
+        data = request.get_data().decode("utf-8")
+        data_json = json.loads(data)
+        # print(data_json)
+        phone = data_json["phone"]
+        captcha4forgetPwd = data_json["captcha"]
+        password = data_json["password"]
+        if PhoneCaptcha.phone_captcha_dict and phone in PhoneCaptcha.phone_captcha_dict:
+            captcha, startTime = PhoneCaptcha.phone_captcha_dict[phone]
+            # print(captcha, startTime)
+            if captcha4forgetPwd == str(captcha):
+                userInfo = Users.query.filter_by(phone=phone).first()
+                if (userInfo is None):
+                    return jsonify(common.falseReturn('', '找不到用户'))
+                else:
+                    userInfo.password = Users.set_password(Users, password)
+                    result = Users.update(Users)
+
+                    if result:
+                        return jsonify(common.falseReturn('', '用户重置密码失败'))
+                    if userInfo.id:
+                        returnUser = {
+                            'id': userInfo.id,
+                            'phone': userInfo.phone,
+                            'login_time': userInfo.login_time
+                        }
+                        return jsonify(common.trueReturn(returnUser, "用户重置密码成功"))
+                    else:
+                        return jsonify(common.falseReturn('', '用户重置密码失败'))
+            else:
+                return jsonify(common.falseReturn('', '验证码错误'))
+        else:
+            return jsonify(common.falseReturn('', '你还没发验证码就想重置密码了'))
