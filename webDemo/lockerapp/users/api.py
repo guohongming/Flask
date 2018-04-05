@@ -105,3 +105,39 @@ def init_api(app):
                 return jsonify(common.falseReturn('', '验证码错误'))
         else:
             return jsonify(common.falseReturn('', '你还没发验证码就想重置密码了'))
+
+    @app.route('/changePwd', methods=['POST'])
+    def changePwd():
+        """
+        用户注册
+        :return: json
+        """
+        # print("+++++++++++++++",PhoneCaptcha.phone_captcha_dict)
+        data = request.get_data().decode("utf-8")
+        data_json = json.loads(data)
+        # print(data_json)
+        phone = data_json["phone"]
+        old_password = data_json["old_password"]
+        new_password = data_json["new_password"]
+        print(phone, old_password, new_password)
+        userInfo = Users.query.filter_by(phone=phone).first()
+        if (userInfo is None):
+            return jsonify(common.falseReturn('', '找不到用户'))
+        else:
+            if (Users.check_password(Users, userInfo.password, old_password)):
+                userInfo.password = Users.set_password(Users, new_password)
+                result = Users.update(Users)
+
+                if result:
+                    return jsonify(common.falseReturn('', '用户修改密码失败'))
+                if userInfo.id:
+                    returnUser = {
+                        'id': userInfo.id,
+                        'phone': userInfo.phone,
+                        'login_time': userInfo.login_time
+                    }
+                    return jsonify(common.trueReturn(returnUser, "用户修改密码成功"))
+                else:
+                    return jsonify(common.falseReturn('', '用户修改密码失败'))
+            else:
+                return jsonify(common.falseReturn('', '旧密码错误'))
