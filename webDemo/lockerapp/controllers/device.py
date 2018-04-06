@@ -68,7 +68,7 @@ def network_detection():
                 jsonify(common.trueReturn(data="1", msg="1"))
             else:
                 return jsonify(common.falseReturn(data="", msg=""))
-    return jsonify(common.trueReturn(data="1", msg="1"))
+    return jsonify(common.falseReturn(data="", msg=""))
 
 
 # 查询网络结果
