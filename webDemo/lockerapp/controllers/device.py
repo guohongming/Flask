@@ -61,10 +61,10 @@ def network_detection():
     if bind_mapping:
         locker_id = bind_mapping.locker_id
         locker = Locker.query.filter(Locker.id == locker_id, Locker.del_flag == 0).first()
-        locker.save()
         if locker:
             locker.net = 1
-            jsonify(common.trueReturn(data="1", msg="1"))
+            locker.save()
+            return jsonify(common.trueReturn(data="1", msg="1"))
         else:
             return jsonify(common.falseReturn(data="", msg=""))
     return jsonify(common.falseReturn(data="", msg=""))
@@ -84,7 +84,7 @@ def network_query():
             if locker.net is 2:
                 locker.net = 0
                 locker.save()
-                jsonify(common.trueReturn(data="1", msg="网络通"))
+                return jsonify(common.trueReturn(data="1", msg="网络通畅"))
             else:
                 return jsonify(common.falseReturn(data="", msg=""))
     return jsonify(common.falseReturn(data="", msg=""))
