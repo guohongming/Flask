@@ -63,11 +63,10 @@ def network_detection():
         locker = Locker.query.filter(Locker.id == locker_id, Locker.del_flag == 0).first()
         locker.save()
         if locker:
-            if locker.net is 0:
-                locker.net = 1
-                jsonify(common.trueReturn(data="1", msg="1"))
-            else:
-                return jsonify(common.falseReturn(data="", msg=""))
+            locker.net = 1
+            jsonify(common.trueReturn(data="1", msg="1"))
+        else:
+            return jsonify(common.falseReturn(data="", msg=""))
     return jsonify(common.falseReturn(data="", msg=""))
 
 
