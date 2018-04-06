@@ -80,7 +80,7 @@ def network_query():
     bind_mapping = BindMapping.query.filter(BindMapping.user_id == user_id, BindMapping.del_flag == 0).first()
     if bind_mapping:
         locker_id = bind_mapping.locker_id
-        locker = Locker.query.fiter(Locker.id == locker_id, Locker.del_flag == 0).first()
+        locker = Locker.query.filter(Locker.id == locker_id, Locker.del_flag == 0).first()
         if locker:
             if locker.net is 2:
                 locker.net = 0
