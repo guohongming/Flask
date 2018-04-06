@@ -40,13 +40,11 @@ def create_app(object_name):
     from lockerapp.users.api import init_api
     init_api(app)
 
-
-
-
     app.register_blueprint(main_blueprint, url_prefix='/main')
     app.register_blueprint(device_blueprint, url_prefix='/device')
     app.register_blueprint(captcha_blueprint, url_prefix='/captcha')
     return app
+
 
 if __name__ == '__main__':
     app = create_app('config')

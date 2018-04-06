@@ -1,7 +1,7 @@
 __author__ = 'Guo'
 
-from flask_script import Manager, Server
 from lockerapp import create_app
+from flask_script import Manager, Server
 
 
 app = create_app('lockerapp.config.DevConfig')
