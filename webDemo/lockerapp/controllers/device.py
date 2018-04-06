@@ -8,7 +8,9 @@ from flask import (Blueprint,
 
 from lockerapp import common
 from flask_jwt import jwt_required, current_identity
-
+from lockerapp.users.model import Users
+from ..models.bind_mapping import BindMapping
+from ..models.locker import Locker
 
 device_blueprint = Blueprint(
     'device',
@@ -53,5 +55,37 @@ def additional_beep_settings():
 @device_blueprint.route('/networkDetection', methods=['GET', 'POST'])
 @jwt_required()
 def network_detection():
+    user = Users.get(Users, current_identity.id)
+    user_id = user.id
+    bind_mapping = BindMapping.query.filter(BindMapping.user_id == user_id, BindMapping.del_flag == 0).first()
+    if bind_mapping:
+        locker_id = bind_mapping.locker_id
+        locker = Locker.query.fiter(Locker.id == locker_id, Locker.del_flag == 0).first()
+        locker.save()
+        if locker:
+            if locker.net is 0:
+                locker.net = 1
+                jsonify(common.trueReturn(data="1", msg="1"))
+            else:
+                return jsonify(common.falseReturn(data="", msg=""))
     return jsonify(common.trueReturn(data="1", msg="1"))
 
+
+# 查询网络结果
+@device_blueprint.route('/networkQuery', methods=['GET', 'POST'])
+@jwt_required()
+def network_query():
+    user = Users.get(Users, current_identity.id)
+    user_id = user.id
+    bind_mapping = BindMapping.query.filter(BindMapping.user_id == user_id, BindMapping.del_flag == 0).first()
+    if bind_mapping:
+        locker_id = bind_mapping.locker_id
+        locker = Locker.query.fiter(Locker.id == locker_id, Locker.del_flag == 0).first()
+        if locker:
+            if locker.net is 2:
+                locker.net = 0
+                locker.save()
+                jsonify(common.trueReturn(data="1", msg="网络通"))
+            else:
+                return jsonify(common.falseReturn(data="", msg=""))
+    return jsonify(common.falseReturn(data="", msg=""))

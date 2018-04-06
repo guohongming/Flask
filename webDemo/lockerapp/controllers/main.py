@@ -131,6 +131,10 @@ def send_locker_msg():
     # 功能设置按钮触
     if data == "AZZZZ":
         locker = Locker.query.filter(Locker.del_flag == 0,Locker.mac==locker_id).first()  #根据locker_id  查库
+        if locker and locker.net == 1:
+            locker.net = 2
+            locker.save()
+
         return "S"+locker.feature_id+locker.chu_ru+locker.tips+"Z"  #拼装出参
 
     # 盗贼假钥匙开锁
@@ -224,6 +228,7 @@ def send_locker_msg():
         return "agzzz"
 
     return "false"
+
 
 # 绑定锁 输入序列号 和 密码
 @main_blueprint.route('/deviceBinding', methods=['GET', 'POST'])
