@@ -22,9 +22,9 @@ def init_api(app):
         phone = data_json["phone"]
         captcha4register = data_json["captcha"]
         password = data_json["password"]
-        if PhoneCaptcha.phone_captcha_dict and phone in PhoneCaptcha.phone_captcha_dict:
-            captcha, startTime = PhoneCaptcha.phone_captcha_dict[phone]
-            # print(captcha, startTime)
+        captchaInfo = PhoneCaptcha.query.filter_by(phone=phone).first()
+        if captchaInfo and captchaInfo.captcha:
+            captcha = captchaInfo.captcha
             if captcha4register == str(captcha):
                 user = Users(phone=phone, password=Users.set_password(Users, password))
                 result = Users.add(Users, user)
@@ -79,9 +79,9 @@ def init_api(app):
         phone = data_json["phone"]
         captcha4forgetPwd = data_json["captcha"]
         password = data_json["password"]
-        if PhoneCaptcha.phone_captcha_dict and phone in PhoneCaptcha.phone_captcha_dict:
-            captcha, startTime = PhoneCaptcha.phone_captcha_dict[phone]
-            # print(captcha, startTime)
+        captchaInfo = PhoneCaptcha.query.filter_by(phone=phone).first()
+        if captchaInfo and captchaInfo.captcha:
+            captcha = captchaInfo.captcha
             if captcha4forgetPwd == str(captcha):
                 userInfo = Users.query.filter_by(phone=phone).first()
                 if (userInfo is None):

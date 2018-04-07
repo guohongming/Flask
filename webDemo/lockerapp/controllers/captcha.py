@@ -9,6 +9,7 @@
 """
 import random
 
+from lockerapp.models.phone_captcha import PhoneCaptcha
 from lockerapp.util.rcscloudapi import RCSCLOUDAPI
 
 __author__ = 'WMC'
@@ -20,11 +21,6 @@ from flask import (Blueprint,
                    jsonify)
 
 from lockerapp import common
-
-
-class PhoneCaptcha():
-    phone_captcha_dict = {}
-
 
 captcha_blueprint = Blueprint(
     'captcha',
@@ -53,8 +49,14 @@ def captcha4register():
         # 记录发送短信的字典，手机号为key，验证码和时间戳为值
         import time
         startTime = int(time.time())
-        PhoneCaptcha.phone_captcha_dict[phone] = (captcha, startTime)
-        print("current list = %s" % PhoneCaptcha.phone_captcha_dict)
+        captchaInfo = PhoneCaptcha.query.filter_by(phone=phone).first()
+        if (captchaInfo is None):
+            captchaInfo = PhoneCaptcha(phone=phone, captcha=captcha, start_time=startTime)
+            captchaInfo.save()
+        else:
+            captchaInfo.captcha = captcha
+            captchaInfo.start_time = startTime
+            captchaInfo.save()
 
     except  Exception as ex:
         print("captcha for register Error = %s" % str(ex))
@@ -83,12 +85,17 @@ def captcha4forgetPwd():
         # 记录发送短信的字典，手机号为key，验证码和时间戳为值
         import time
         startTime = int(time.time())
-        PhoneCaptcha.phone_captcha_dict[phone] = (captcha, startTime)
-        print("current list = %s" % PhoneCaptcha.phone_captcha_dict)
+        captchaInfo = PhoneCaptcha.query.filter_by(phone=phone).first()
+        if (captchaInfo is None):
+            captchaInfo = PhoneCaptcha(phone=phone, captcha=captcha, start_time=startTime)
+            captchaInfo.save()
+        else:
+            captchaInfo.captcha = captcha
+            captchaInfo.start_time = startTime
+            captchaInfo.save()
 
     except  Exception as ex:
         print("captcha for register Error = %s" % str(ex))
         return jsonify(common.falseReturn('', '发送短信失败'))
     else:
         return jsonify(common.trueReturn('', "发送短信成功"))
-
