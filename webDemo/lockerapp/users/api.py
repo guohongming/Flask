@@ -107,6 +107,7 @@ def init_api(app):
             return jsonify(common.falseReturn('', '你还没发验证码就想重置密码了'))
 
     @app.route('/changePwd', methods=['POST'])
+    @jwt_required()
     def changePwd():
         """
         用户注册
